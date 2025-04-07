@@ -2,9 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Product Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .accordion-button::after {
+            transform: rotate(-90deg); /* Rotate the arrow to the side by default */
+        }
+        .accordion-button:not(.collapsed)::after {
+            transform: rotate(0deg); /* Default down arrow when expanded */
+        }
+    </style>
 </head>
 <body>
-<p>This is the admin</p>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Admin Management Board</h1>
+
+    <div style="display: flex; justify-content: space-evenly;">
+        <!-- Accordion for Product Management -->
+        <div class="accordion" id="productManagementAccordion">
+        <!-- Accordion Item -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <i class="bi bi-boxes" style="margin-right: 20px"></i>
+                    Product Management Table
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#productManagementAccordion">
+                <div class="accordion-body">
+
+                    <!-- Table for product management -->
+                    <table class="table table-bordered table-hover mt-3">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Amount Sold</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-table">
+                            <!-- Add more rows dynamically -->
+                        </tbody>
+                    </table>
+
+                    <!-- Add New Product Button -->
+                    <div class="text-center mt-3">
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">Add New Product</button>
+                        <button class="btn btn btn-warning" data-bs-toggle="modal" data-bs-target="#modifyModal" style="margin-left: 20px;">Modify Product</button>
+                        <button class="btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" style="margin-left: 20px;">Delete Product</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Accordion for Game Management -->
+        <div class="accordion" id="gameManagementAccordion">
+            <!-- Accordion Item -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <i class="bi bi-gear" style="margin-right: 20px"></i>
+                        Game Settings
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#gameManagementAccordion">
+                    <div class="accordion-body">
+
+                        <div class="text-center mt-3">
+                            <button class="btn btn-success">Here you can change settings</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-form">
+                    <div class="mb-3">
+                        <label for="add-name" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="add-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="add-price" class="form-label">Price</label>
+                        <input type="number" step="0.01" class="form-control" id="add-price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="add-amount-sold" class="form-label">Amount Sold</label>
+                        <input type="number" class="form-control" id="add-amount-sold" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="add_product">Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modify Product Modal -->
+<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modifyModalLabel">Modify Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="modify-form">
+                    <div class="mb-3">
+                        <label for="modify-id" class="form-label">Product ID</label>
+                        <input type="text" class="form-control" id="modify-id">
+                    </div>
+                    <div class="mb-3">
+                        <label for="modify-name" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="modify-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modify-price" class="form-label">Price</label>
+                        <input type="number" step="0.01" class="form-control" id="modify-price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modify-amount-sold" class="form-label">Amount Sold</label>
+                        <input type="number" class="form-control" id="modify-amount-sold" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="mod_product">Modify Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Product Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="delete-form">
+                    <div class="mb-3">
+                        <label for="delete-id" class="form-label">Product ID</label>
+                        <input type="text" class="form-control" id="delete-id">
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100" id="del_product">Delete Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (with Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Set up Modify and Delete modals with pre-filled values
+    document.querySelectorAll('button[data-bs-target="#modifyModal"]').forEach(button => {
+        button.addEventListener('click', () => {
+            const row = button.closest('tr');
+            document.getElementById('modify-id').value = row.children[0].textContent.trim();
+            document.getElementById('modify-name').value = row.children[1].textContent.trim();
+            document.getElementById('modify-price').value = row.children[2].textContent.trim().slice(1); // Remove "$"
+            document.getElementById('modify-amount-sold').value = row.children[3].textContent.trim();
+        });
+    });
+
+    document.querySelectorAll('button[data-bs-target="#deleteModal"]').forEach(button => {
+        button.addEventListener('click', () => {
+            //delete product
+        });
+    });
+</script>
+<script src="script.js"></script>
 </body>
 </html>
