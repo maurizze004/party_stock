@@ -1,0 +1,11 @@
+# Ignore IntelliJ IDEA project files and folders
+.idea/
+*.iml
+
+# Ignore MacOS system files
+.DS_Store
+
+# General Python files to ignore
+__pycache__/
+*.pyc
+*.pyo
