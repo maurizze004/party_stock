@@ -1,0 +1,44 @@
+        /* Card Styling */
+        .drink-card {
+            display: flex;
+            align-items: center;
+            border-width: 3px; /* Visible colored border */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 6px 8px 10px rgba(0, 0, 0, 0.5); /* Light shadow */
+        }
+
+        body {
+            font-family: 'Bahnschrift', sans-serif;
+        }
+
+        /* Arrow Styling */
+        .card-icon {
+            font-size: 3rem; /* Larger arrow icons */
+            margin-right: 60px; /* Space between arrow and text */
+        }
+
+        /* Arrow Colors */
+        .arrow-up {
+            color: red; /* Red for price increase */
+        }
+
+        .arrow-down {
+            color: green; /* Green for price decrease */
+        }
+
+        .arrow-unchanged {
+            color: gray; /* Gray for unchanged price */
+        }
+
+        /* Title and Price Styling */
+        .card-title {
+            font-size: 1.5rem; /* Larger title */
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            font-size: 1.75rem; /* Larger price */
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }

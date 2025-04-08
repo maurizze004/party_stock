@@ -33,6 +33,7 @@ function renderProductTable(products) {
         row.innerHTML = `
             <td>${product.id}</td>
             <td>${product.name}</td>
+            <td>&euro;&nbsp;${product.old_price.toFixed(2)}</td>
             <td>&euro;&nbsp;${product.price.toFixed(2)}</td>
             <td>${product.amount_sold}&nbsp;Fl.</td>
         `;
@@ -67,6 +68,7 @@ async function addProduct(event) {
             },
             body: JSON.stringify({
                 name: name,
+                old_price: price,
                 price: price,
                 amount_sold: amountSold,
             }), // Convert the product data to JSON

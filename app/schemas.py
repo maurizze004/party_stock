@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class DrinkBase(BaseModel):
     name: str
+    old_price: float
     price: float
     amount_sold: int = 0  # Default value
 

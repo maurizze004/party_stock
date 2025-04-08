@@ -2,9 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bierbörse Customer</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<p>This is the customer</p>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-center align-items-center mb-5">
+            <img src="./assets/spatz-logo.jpg" style="width: 100px;">
+            <h1 class="text-center mx-5" style="font-size: 50px"><b>Bierbörse&nbsp;&#64;&nbsp;Juze&nbsp;Spatz</b></h1>
+            <img src="./assets/härle-logo.png" style="width: 200px;">
+        </div>
+
+        <div class="row" id="drinks-container">
+            <!-- Drink cards will be dynamically populated here -->
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>

@@ -7,5 +7,6 @@ class Drink(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
+    old_price = Column(Float, nullable=False)
     price = Column(Float, nullable=False)
     amount_sold = Column(Integer)
