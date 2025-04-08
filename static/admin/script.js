@@ -1,5 +1,6 @@
 // Select the <tbody> element where products will be rendered
 const productTableBody = document.getElementById('product-table');
+const buttonContainer = document.getElementById('button-container');
 // Function to fetch product data from the API and display it in the table
 async function fetchProducts() {
     try {
@@ -42,6 +43,58 @@ function renderProductTable(products) {
         productTableBody.appendChild(row);
     });
 }
+
+//create buttons
+const apiUrl = '/drinks/get_all';
+async function loadButtons() {
+  try {
+    // Fetch data from the API using async/await
+    const response = await fetch(apiUrl);
+
+    // Check if the response is successful (status 200)
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.statusText}`);
+    }
+
+    // Parse the response as JSON
+    const data = await response.json();
+
+    // Get the button container element
+    const buttonContainer = document.getElementById('button-container');
+
+    // Loop through the data and create a button for each item
+    data.forEach(item => {
+      // Create a new button element
+      const button = document.createElement('button');
+
+      // Set button attributes (e.g., class, text)
+      button.classList.add('btn', 'btn-outline-info');
+      button.style.height = '70px';
+      button.style.fontSize = '30px';
+      button.style.marginRight = '20px';
+      const btnText = `<i class="bi bi-${item.id}-circle"></i>&nbsp;` + item.name;
+      button.innerHTML = btnText;  // Set button text to a relevant field from the data (e.g., item.name)
+
+      // Optional: Set a custom attribute for each button (e.g., id)
+      button.setAttribute('data-id', item.id);
+      button.id = item.id;
+
+      // Append the button to the container
+      buttonContainer.appendChild(button);
+
+      // Add click event listener to each button (optional)
+      button.addEventListener('click', () => {
+        updateSoldAmount(item.id)
+      });
+    });
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+// Call the async function to load buttons
+buttonContainer.innerHTML = '';
+loadButtons();
 
 
 // Add
@@ -93,7 +146,9 @@ async function addProduct(event) {
         }
 
         // Refresh the product table
-        fetchProducts(); // Fetch and re-render the updated product table
+        fetchProducts();
+        buttonContainer.innerHTML = '';
+        loadButtons(); // Fetch and re-render the updated product table
     } catch (error) {
         console.error('Error adding product:', error);
         alert('An error occurred while adding the product. Please try again.');
@@ -133,6 +188,8 @@ async function deleteProduct(event) {
 
         // Refresh the product table
         fetchProducts(); // Fetch updated product list
+        buttonContainer.innerHTML = '';
+        loadButtons();
     } catch (error) {
         console.error('Error deleting product:', error);
         alert('An error occurred while deleting the product. Please try again.');
@@ -145,6 +202,7 @@ async function modifyProduct(event) {
     // Retrieve the input values from the Modify modal fields
     const productId = document.getElementById('modify-id').value.trim();
     const name = document.getElementById('modify-name').value.trim();
+    const old_Price = parseFloat(document.getElementById('modify-old-price').value);
     const price = parseFloat(document.getElementById('modify-price').value);
     const amountSold = parseInt(document.getElementById('modify-amount-sold').value);
 
@@ -163,6 +221,7 @@ async function modifyProduct(event) {
             },
             body: JSON.stringify({
                 name: name,
+                old_price: old_Price,
                 price: price,
                 amount_sold: amountSold,
             }), // Convert the updated product details to JSON
@@ -182,6 +241,8 @@ async function modifyProduct(event) {
         }
 
         // Refresh the product table with updated data
+        buttonContainer.innerHTML = '';
+        loadButtons();
         fetchProducts();
     } catch (error) {
         console.error('Error modifying product:', error);
@@ -189,12 +250,74 @@ async function modifyProduct(event) {
     }
 }
 
+//update sold amount
+async function updateSoldAmount(productId) {
+
+    try {
+        const response = await fetch(`/drinks/scale-amount/${productId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.ok) {
+            console.log(`Successfully incremented amount_sold for product ID: ${productId}`);
+            fetchProducts();
+        } else {
+            // If the status is not OK, handle the error
+            console.error(`Failed to increment amount_sold. Status Code: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Something went wrong:", error);
+    }
+}
+
+const switchElement = document.getElementById('customSwitch1');
+let keyDownListener;  // Variable, um den Event-Listener zu speichern
+// Event-Listener für Statusänderung
+switchElement.addEventListener('change', function() {
+    if (switchElement.checked === true) {
+        // On - Eingabe aktivieren
+        console.log("Schalter ist AN");
+
+        // Wenn der Listener bereits existiert, entferne ihn, bevor du ihn neu hinzufügst
+        if (keyDownListener) {
+            window.removeEventListener('keydown', keyDownListener);
+        }
+
+        // Hinzufügen des keydown Event-Listeners
+        keyDownListener = (event) => {
+            const productKey = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']);
+
+            if (productKey.has(event.key)) {
+                updateSoldAmount(event.key);
+            } else {
+                alert('Button has no product');
+            }
+        };
+        window.addEventListener('keydown', keyDownListener);
+    } else {
+        // Off - Eingabe deaktivieren
+        console.log("Schalter ist AUS");
+        // Wenn der Listener bereits existiert, entferne ihn, bevor du ihn neu hinzufügst
+        if (keyDownListener) {
+            window.removeEventListener('keydown', keyDownListener);
+        }
+
+        keyDownListener = (event) => {
+            const productKey = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']);
+
+        };
+        window.addEventListener('keydown', keyDownListener);
+    }
+});
 
 
 // Handling the button
 document.getElementById('add_product').addEventListener('click', addProduct);
 document.getElementById('del_product').addEventListener('click', deleteProduct);
-document.getElementById('mod_product').addEventListener('click', modifyProduct)
+document.getElementById('mod_product').addEventListener('click', modifyProduct);
 
 // Fetch and Display Products when screen loaded
 // Reset Modals

@@ -32,6 +32,16 @@ def update_drink(db: Session, drink_id: int, updated_data: dict):
         db.refresh(db_drink)
     return db_drink
 
+# Increment the amount_sold of a drink by 1
+def increment_amount_sold(db: Session, drink_id: int):
+    db_drink = get_drink_by_id(db, drink_id)
+    if db_drink:
+        db_drink.amount_sold += 1  # Increment the amount_sold field
+        db.commit()
+        db.refresh(db_drink)  # Refresh the instance
+        return db_drink
+    return None  # If drink doesn't exist
+
 
 # Delete a drink
 def delete_drink(db: Session, drink_id: int):

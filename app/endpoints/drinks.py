@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.crud import create_drink, get_all_drinks, get_drink_by_id, update_drink, delete_drink
+from app.crud import create_drink, get_all_drinks, get_drink_by_id, update_drink, increment_amount_sold, delete_drink
 from app.schemas import DrinkCreate, DrinkResponse
 from app.database import get_db
 
@@ -10,6 +10,13 @@ router = APIRouter()
 @router.post("/drinks/create", response_model=DrinkResponse)
 def create(drink: DrinkCreate, db: Session = Depends(get_db)):
     return create_drink(db, drink)
+
+@router.patch("/drinks/scale-amount/{drink_id}", response_model=DrinkResponse)
+def scale_amount(drink_id: int, db: Session = Depends(get_db)):
+    updated_drink = increment_amount_sold(db, drink_id)
+    if not updated_drink:
+        raise HTTPException(status_code=404, detail="Drink not found")
+    return updated_drink
 
 
 @router.get("/drinks/get_all", response_model=list[DrinkResponse])

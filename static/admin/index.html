@@ -14,6 +14,21 @@
         .accordion-button:not(.collapsed)::after {
             transform: rotate(0deg); /* Default down arrow when expanded */
         }
+        .form-check-input:checked {
+            background-color: #28a745; /* Grüner Hintergrund wenn der Schalter aktiviert ist */
+            border-color: #28a745; /* Borderfarbe anpassen */
+        }
+
+        .form-check-input:focus {
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25); /* Grün wenn fokussiert */
+        }
+
+        /* Optional: Wenn der Schalter aus ist */
+        .form-check-input {
+            background-color: #ccc; /* Grauer Hintergrund, wenn der Schalter aus ist */
+            border-color: #ccc; /* Graue Borderfarbe */
+            --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e")
+        }
     </style>
 </head>
 <body>
@@ -21,9 +36,10 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">Admin Management Board</h1>
 
-    <div style="display: flex; justify-content: space-evenly;">
-        <!-- Accordion for Product Management -->
-        <div class="accordion" id="productManagementAccordion">
+    <div class="row">
+       <div class="col-md-6">
+            <!-- Accordion for Product Management -->
+            <div class="accordion" id="productManagementAccordion">
         <!-- Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
@@ -62,28 +78,39 @@
             </div>
         </div>
     </div>
+       </div>
+        <div class="col-md-6">
+            <!-- Accordion for Game Management -->
+            <div class="accordion" id="gameManagementAccordion">
+                <!-- Accordion Item -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="bi bi-gear" style="margin-right: 20px"></i>
+                            Game Settings
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#gameManagementAccordion">
+                        <div class="row accordion-body">
 
-        <!-- Accordion for Game Management -->
-        <div class="accordion" id="gameManagementAccordion">
-            <!-- Accordion Item -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        <i class="bi bi-gear" style="margin-right: 20px"></i>
-                        Game Settings
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#gameManagementAccordion">
-                    <div class="accordion-body">
-
-                        <div class="text-center mt-3">
-                            <button class="btn btn-success">Here you can change settings</button>
+                            <div class="col-md-6 form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="customSwitch1">
+                                <label class="form-check-label" for="customSwitch1">Key control on/off</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="customRange" class="form-label">Refresh time in sec </label>
+                                <input type="number" id="customRange" style="max-width: 75px; margin-left: 10px">
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="container mt-5">
+    <div id="button-container" class="d-flex flex-wrap">
+        <!-- Dynamic buttons here -->
     </div>
 </div>
 
@@ -137,6 +164,10 @@
                     <div class="mb-3">
                         <label for="modify-price" class="form-label">Price</label>
                         <input type="number" step="0.01" class="form-control" id="modify-price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modify-price" class="form-label">Old Price</label>
+                        <input type="number" step="0.01" class="form-control" id="modify-old-price" required>
                     </div>
                     <div class="mb-3">
                         <label for="modify-amount-sold" class="form-label">Amount Sold</label>

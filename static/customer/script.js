@@ -44,6 +44,6 @@ function getPriceTrend(price, oldPrice) {
     }
 
 }
-// Initialize the page with data
 
+// Initialize the page with data
 fetchDrinks();
