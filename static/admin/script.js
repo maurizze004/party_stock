@@ -133,9 +133,6 @@ async function addProduct(event) {
 
         const newProduct = await response.json(); // Get the response data if needed
 
-        // Display success message
-        alert('Product added successfully!');
-
         // Reset the form fields
         document.getElementById('add-form').reset();
 
@@ -176,9 +173,6 @@ async function deleteProduct(event) {
         if (!response.ok) {
             throw new Error(`Failed to delete product. HTTP status: ${response.status}`);
         }
-
-        // Display success message
-        alert('Product deleted successfully!');
 
         // Close the modal using Bootstrap's modal instance
         const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
@@ -230,9 +224,6 @@ async function modifyProduct(event) {
         if (!response.ok) {
             throw new Error(`Failed to modify product. HTTP status: ${response.status}`);
         }
-
-        // Display success message
-        alert('Product modified successfully!');
 
         // Optionally close the modal
         const modifyModal = bootstrap.Modal.getInstance(document.getElementById('modifyModal'));
@@ -336,3 +327,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('delete-form').reset();
     });
 });
+
+fetchProducts();
+setInterval(fetchProducts, 10000);
