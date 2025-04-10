@@ -24,13 +24,14 @@ async function fetchProducts() {
 // Function to render the table dynamically based on the fetched product data
 function renderProductTable(products) {
     // Clear the table body before appending new rows
-    productTableBody.innerHTML = '';
 
+    productTableBody.innerHTML = '';
     // Loop through the array of products and append rows to the table
     products.forEach((product) => {
-        const row = document.createElement('tr');
 
+        const row = document.createElement('tr');
         // Create table rows dynamically with product data
+
         row.innerHTML = `
             <td>${product.id}</td>
             <td>${product.name}</td>
@@ -38,16 +39,15 @@ function renderProductTable(products) {
             <td>&euro;&nbsp;${product.price.toFixed(2)}</td>
             <td>${product.amount_sold}&nbsp;Fl.</td>
         `;
-
         // Append the row to the table body
         productTableBody.appendChild(row);
     });
-}
 
+}
 //create buttons
 const apiUrl = '/drinks/get_all';
 async function loadButtons() {
-  try {
+    try {
     // Fetch data from the API using async/await
     const response = await fetch(apiUrl);
 
@@ -90,28 +90,28 @@ async function loadButtons() {
   } catch (error) {
     console.error('Error fetching data:', error);
   }
-}
 
+}
 // Call the async function to load buttons
 buttonContainer.innerHTML = '';
+
+
 loadButtons();
-
-
 // Add
 async function addProduct(event) {
-    event.preventDefault(); // Prevent the form from reloading the page
 
+    event.preventDefault(); // Prevent the form from reloading the page
     // Select the input fields
     const name = document.getElementById('add-name').value.trim();
     const price = parseFloat(document.getElementById('add-price').value);
-    const amountSold = parseInt(document.getElementById('add-amount-sold').value);
 
+    const amountSold = parseInt(document.getElementById('add-amount-sold').value);
     // Validate the input data
     if (!name || isNaN(price) || isNaN(amountSold) || price <= 0 || amountSold < 0) {
         alert('Please fill all fields correctly (price must be positive, amount sold cannot be negative).');
         return;
-    }
 
+    }
     try {
         // Send the product data to the server
         const response = await fetch('/drinks/create', {
@@ -156,17 +156,17 @@ async function addProduct(event) {
 }
 // Delete
 async function deleteProduct(event) {
+
     event.preventDefault(); // Prevent the form from submitting normally
-
     // Get the product ID from the Delete modal
-    const productId = document.getElementById('delete-id').value.trim();
 
+    const productId = document.getElementById('delete-id').value.trim();
     // Check if a product ID is provided
     if (!productId) {
         alert('Please provide a valid product ID.');
         return;
-    }
 
+    }
     try {
         // Send DELETE request to the backend API
         const response = await fetch(`/drinks/delete/${productId}`, {
@@ -197,21 +197,21 @@ async function deleteProduct(event) {
 }
 // Modify
 async function modifyProduct(event) {
-    event.preventDefault(); // Prevent the form from submitting normally
 
+    event.preventDefault(); // Prevent the form from submitting normally
     // Retrieve the input values from the Modify modal fields
     const productId = document.getElementById('modify-id').value.trim();
     const name = document.getElementById('modify-name').value.trim();
     const old_Price = parseFloat(document.getElementById('modify-old-price').value);
     const price = parseFloat(document.getElementById('modify-price').value);
-    const amountSold = parseInt(document.getElementById('modify-amount-sold').value);
 
+    const amountSold = parseInt(document.getElementById('modify-amount-sold').value);
     // Validate the input data
     if (!productId || !name || isNaN(price) || isNaN(amountSold) || price <= 0 || amountSold < 0) {
         alert('Please fill out all fields correctly (price must be positive, amount sold cannot be negative).');
         return;
-    }
 
+    }
     try {
         // Send the updated product data to the backend API
         const response = await fetch(`/drinks/modify/${productId}`, {
@@ -248,11 +248,10 @@ async function modifyProduct(event) {
         console.error('Error modifying product:', error);
         alert('An error occurred while modifying the product. Please try again.');
     }
-}
 
+}
 //update sold amount
 async function updateSoldAmount(productId) {
-
     try {
         const response = await fetch(`/drinks/scale-amount/${productId}`, {
             method: "PATCH",
@@ -271,11 +270,11 @@ async function updateSoldAmount(productId) {
     } catch (error) {
         console.error("Something went wrong:", error);
     }
+
 }
 
 const switchElement = document.getElementById('customSwitch1');
-let keyDownListener;  // Variable, um den Event-Listener zu speichern
-// Event-Listener für Statusänderung
+let keyDownListener;
 switchElement.addEventListener('change', function() {
     if (switchElement.checked === true) {
         // On - Eingabe aktivieren
@@ -312,7 +311,6 @@ switchElement.addEventListener('change', function() {
         window.addEventListener('keydown', keyDownListener);
     }
 });
-
 
 // Handling the button
 document.getElementById('add_product').addEventListener('click', addProduct);

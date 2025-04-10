@@ -8,7 +8,6 @@ async function fetchDrinks() {
 
     drinksContainer.innerHTML = ''; // Clear any existing cards
     drinks.forEach(drink => {
-
         const { name, price, old_price } = drink;
         // Determine the price trend
 
@@ -29,9 +28,8 @@ async function fetchDrinks() {
                 </div>
             </div>
         `;
-        drinksContainer.insertAdjacentHTML('beforeend', card);
+        drinksContainer.insertAdjacentHTML('beforeend', card)
     });
-
 }
 // Get price trend (arrow icon & border color)
 function getPriceTrend(price, oldPrice) {
@@ -47,3 +45,4 @@ function getPriceTrend(price, oldPrice) {
 
 // Initialize the page with data
 fetchDrinks();
+setInterval(fetchDrinks, 5000);
