@@ -329,4 +329,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 fetchProducts();
-setInterval(fetchProducts, 10000);
+setInterval(fetchProducts, 2000);

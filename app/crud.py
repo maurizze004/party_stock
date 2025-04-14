@@ -20,7 +20,7 @@ def create_drink(db: Session, drink: DrinkCreate):
 # Retrieve all drinks
 def get_all_drinks(db: Session):
     PRICE_DECREMENT_AMOUNT = 0.10  # Price decreases by $0.10
-    DECREASE_THRESHOLD = 1 * 60  # 2 minutes (threshold in seconds)
+    DECREASE_THRESHOLD = 2 * 60  # 2 minutes (threshold in seconds)
 
     # Get the current time
     current_time = datetime.now()
@@ -45,7 +45,7 @@ def get_all_drinks(db: Session):
             drink.price -= PRICE_DECREMENT_AMOUNT
 
             # Cap the price to a minimum of $0.01
-            drink.price = max(drink.price, 1.99)
+            drink.price = max(drink.price, 2.00) # max_price from db , set able
 
             # Update the runtime `last_updated` time
             last_updated_times[drink.id] = current_time
@@ -86,8 +86,8 @@ def increment_amount_sold(db: Session, drink_id: int):
     db_drink.amount_sold += 1
 
     # Pricing logic
-    PRICE_INCREMENT_AMOUNT = 0.25
-    DECREASE_THRESHOLD = 1 * 60  # 2 minutes (threshold in seconds)
+    PRICE_INCREMENT_AMOUNT = 0.30
+    DECREASE_THRESHOLD = 2 * 60  # 2 minutes (threshold in seconds)
 
     # Get the current time
     current_time = datetime.now()
@@ -96,8 +96,7 @@ def increment_amount_sold(db: Session, drink_id: int):
     last_update = last_updated_times.get(drink_id, datetime.now() - timedelta(seconds=DECREASE_THRESHOLD + 1))
     time_since_last_update = (current_time - last_update).total_seconds()
 
-    if db_drink.amount_sold % 5 == 0:
-        db_drink.price += PRICE_INCREMENT_AMOUNT
+    db_drink.price += PRICE_INCREMENT_AMOUNT
 
     # Save changes to the database
     db.commit()
