@@ -43,6 +43,20 @@ function getPriceTrend(price, oldPrice) {
 
 }
 
+async function fetchCrashStatus() {
+    const response = await fetch('/drinks/crash-status');
+    const { crash_active } = await response.json();
+    const crashInfo = document.getElementById('crash-info');
+    if (crash_active === true){
+        crashInfo.style.display = 'block';
+    } else {
+        crashInfo.style.display = 'none';
+    }
+}
+
 // Initialize the page with data
 fetchDrinks();
+fetchCrashStatus();
+
 setInterval(fetchDrinks, 5000);
+setInterval(fetchCrashStatus, 1000);

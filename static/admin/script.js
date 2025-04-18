@@ -308,6 +308,16 @@ document.getElementById('add_product').addEventListener('click', addProduct);
 document.getElementById('del_product').addEventListener('click', deleteProduct);
 document.getElementById('mod_product').addEventListener('click', modifyProduct);
 
+document.getElementById('start-crash').addEventListener('click', () => {
+    fetch('/drinks/stock-crash', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // Notify the user
+            })
+            .catch(error => console.error('Error triggering stock crash:', error));
+
+});
+
 // Fetch and Display Products when screen loaded
 // Reset Modals
 document.addEventListener('DOMContentLoaded', () => {
