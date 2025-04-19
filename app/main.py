@@ -1,3 +1,5 @@
+import multiprocessing
+import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
@@ -29,3 +31,7 @@ def redirect_to_admin():
 
 # Register drinks router
 app.include_router(drinks.router)
+
+if __name__ == "__main__":
+    multiprocessing.freeze_support()
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False, workers=1)
