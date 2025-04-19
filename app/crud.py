@@ -6,7 +6,9 @@ from app.schemas import DrinkCreate
 # Dictionary to store runtime-tracked `last_updated` timestamps for drinks
 # Key: drink_id, Value: datetime of last sale
 last_updated_times = {}
-
+def get_stock_crash_active():
+    from app.endpoints.drinks import stock_crash_active
+    return stock_crash_active
 
 # Create a new drink
 def create_drink(db: Session, drink: DrinkCreate):
@@ -18,8 +20,9 @@ def create_drink(db: Session, drink: DrinkCreate):
 
 
 # Retrieve all drinks
+# Here modifiable:  The decrease rate and threshold
 def get_all_drinks(db: Session):
-    PRICE_DECREMENT_AMOUNT = 0.10  # Price decreases by $0.10
+    PRICE_DECREMENT_AMOUNT = 0.10  # Price decreases by €0.10
     DECREASE_THRESHOLD = 2 * 60  # 2 minutes (threshold in seconds)
 
     # Get the current time
@@ -44,8 +47,8 @@ def get_all_drinks(db: Session):
             # Decrease the price
             drink.price -= PRICE_DECREMENT_AMOUNT
 
-            # Cap the price to a minimum of $0.01
-            drink.price = max(drink.price, 2.00) # max_price from db , set able
+            # Cap the price to a minimum of database min_price
+            drink.price = max(drink.price, drink.min_price)
 
             # Update the runtime `last_updated` time
             last_updated_times[drink.id] = current_time
@@ -55,7 +58,6 @@ def get_all_drinks(db: Session):
 
     # Return the updated list of drinks
     return drinks
-
 
 
 # Retrieve a drink by its ID
@@ -73,7 +75,9 @@ def update_drink(db: Session, drink_id: int, updated_data: dict):
         db.refresh(db_drink)
     return db_drink
 
+
 # Increment the amount_sold of a drink by 1
+# Here modifiable:  Delete '#' in line 92 and rücke line 93 ein in for incrementing every X amount sold; default every 3rd
 def increment_amount_sold(db: Session, drink_id: int):
     db_drink = get_drink_by_id(db, drink_id)
     if not db_drink:
@@ -85,17 +89,16 @@ def increment_amount_sold(db: Session, drink_id: int):
     # Increment the `amount_sold` counter
     db_drink.amount_sold += 1
 
+    # add here price for accounting
+    if get_stock_crash_active():
+        db_drink.revenue += 1.00
+    else:
+        db_drink.revenue += db_drink.price
+
     # Pricing logic
     PRICE_INCREMENT_AMOUNT = 0.30
-    DECREASE_THRESHOLD = 2 * 60  # 2 minutes (threshold in seconds)
 
-    # Get the current time
-    current_time = datetime.now()
-
-    # Retrieve the last updated time from the runtime dictionary (default to a very old time)
-    last_update = last_updated_times.get(drink_id, datetime.now() - timedelta(seconds=DECREASE_THRESHOLD + 1))
-    time_since_last_update = (current_time - last_update).total_seconds()
-
+    # if db_drink.amount_sold % 3 == 0:
     db_drink.price += PRICE_INCREMENT_AMOUNT
 
     # Save changes to the database

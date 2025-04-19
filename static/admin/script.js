@@ -37,6 +37,7 @@ function renderProductTable(products) {
             <td>${product.name}</td>
             <td>&euro;&nbsp;${product.old_price.toFixed(2)}</td>
             <td>&euro;&nbsp;${product.price.toFixed(2)}</td>
+            <td>&euro;&nbsp;${product.min_price.toFixed(2)}</td>
             <td>${product.amount_sold}&nbsp;Fl.</td>
         `;
         // Append the row to the table body
@@ -104,10 +105,11 @@ async function addProduct(event) {
     // Select the input fields
     const name = document.getElementById('add-name').value.trim();
     const price = parseFloat(document.getElementById('add-price').value);
+    const min_price = parseFloat(document.getElementById('add-price-max').value);
 
     const amountSold = parseInt(document.getElementById('add-amount-sold').value);
     // Validate the input data
-    if (!name || isNaN(price) || isNaN(amountSold) || price <= 0 || amountSold < 0) {
+    if (!name || isNaN(price) || isNaN(amountSold) || price <= 0 || min_price <= 0 || amountSold < 0) {
         alert('Please fill all fields correctly (price must be positive, amount sold cannot be negative).');
         return;
 
@@ -123,6 +125,7 @@ async function addProduct(event) {
                 name: name,
                 old_price: price,
                 price: price,
+                min_price: min_price,
                 amount_sold: amountSold,
             }), // Convert the product data to JSON
         });
@@ -198,10 +201,11 @@ async function modifyProduct(event) {
     const name = document.getElementById('modify-name').value.trim();
     const old_Price = parseFloat(document.getElementById('modify-old-price').value);
     const price = parseFloat(document.getElementById('modify-price').value);
+    const min_price = parseFloat(document.getElementById('modify-min-price').value);
 
     const amountSold = parseInt(document.getElementById('modify-amount-sold').value);
     // Validate the input data
-    if (!productId || !name || isNaN(price) || isNaN(amountSold) || price <= 0 || amountSold < 0) {
+    if (!productId || !name || isNaN(price) || isNaN(amountSold) || price <= 0 || min_price <= 0 || amountSold < 0) {
         alert('Please fill out all fields correctly (price must be positive, amount sold cannot be negative).');
         return;
 
@@ -217,6 +221,7 @@ async function modifyProduct(event) {
                 name: name,
                 old_price: old_Price,
                 price: price,
+                min_price: min_price,
                 amount_sold: amountSold,
             }), // Convert the updated product details to JSON
         });
