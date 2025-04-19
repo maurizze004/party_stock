@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Product Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .accordion-button::after {
+            transform: rotate(-90deg); /* Rotate the arrow to the side by default */
+        }
+        .accordion-button:not(.collapsed)::after {
+            transform: rotate(0deg); /* Default down arrow when expanded */
+        }
+        .form-check-input:checked {
+            background-color: #28a745; /* Grüner Hintergrund wenn der Schalter aktiviert ist */
+            border-color: #28a745; /* Borderfarbe anpassen */
+        }
+
+        .form-check-input:focus {
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25); /* Grün wenn fokussiert */
+        }
+
+        /* Optional: Wenn der Schalter aus ist */
+        .form-check-input {
+            background-color: #ccc; /* Grauer Hintergrund, wenn der Schalter aus ist */
+            border-color: #ccc; /* Graue Borderfarbe */
+            --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e")
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+      <h1 class="display-5">👨‍💼 Admin Management Board</h1>
+      <p class="text-muted">Overview of settings, pricing and sales</p>
+    </div>
+
+    <div class="row">
+       <div class="col-md-6">
+            <!-- Accordion for Product Management -->
+            <div class="accordion" id="productManagementAccordion">
+        <!-- Accordion Item -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <i class="bi bi-boxes" style="margin-right: 20px"></i>
+                    Product Management Table
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#productManagementAccordion">
+                <div class="accordion-body">
+
+                    <!-- Table for product management -->
+                    <table class="table table-bordered table-hover mt-3">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Old Price</th>
+                                <th>Price</th>
+                                <th>Min. Price</th>
+                                <th>Amount Sold</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-table">
+                            <!-- Add more rows dynamically -->
+                        </tbody>
+                    </table>
+
+                    <!-- Add New Product Button -->
+                    <div class="text-center mt-3">
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">Add New Product</button>
+                        <button class="btn btn btn-warning" data-bs-toggle="modal" data-bs-target="#modifyModal" style="margin-left: 20px;">Modify Product</button>
+                        <button class="btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" style="margin-left: 20px;">Delete Product</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+       </div>
+        <div class="col-md-6">
+            <!-- Accordion for Game Management -->
+            <div class="accordion" id="gameManagementAccordion">
+                <!-- Accordion Item -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="bi bi-gear" style="margin-right: 20px"></i>
+                            Game Settings
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#gameManagementAccordion">
+                        <div class="row accordion-body">
+                            <div class="col-md-6 form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="customSwitch1">
+                                <label class="form-check-label" for="customSwitch1">Key control on/off</label>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" id="start-crash">Start Crash (60 sec)</button>
+                                <script src="../script.js"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5">
+    <div id="button-container" class="d-flex flex-wrap">
+        <!-- Dynamic buttons here -->
+    </div>
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-form">
+                    <div class="mb-3">
+                        <label for="add-name" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="add-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="add-price" class="form-label">Price</label>
+                        <input type="number" step="0.01" class="form-control" id="add-price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="add-price-max" class="form-label">Min. Price</label>
+                        <input type="number" class="form-control" id="add-price-max" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="add-amount-sold" class="form-label">Amount Sold</label>
+                        <input type="number" class="form-control" id="add-amount-sold">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="add_product">Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modify Product Modal -->
+<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modifyModalLabel">Modify Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="modify-form">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="modify-id" placeholder="Product ID">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="modify-name" placeholder="Product Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" step="0.01" class="form-control" id="modify-price" placeholder="Product Price" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" step="0.01" class="form-control" id="modify-old-price" placeholder="Old Price" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" step="0.01" class="form-control" id="modify-min-price" placeholder="Minimum Price" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" id="modify-amount-sold" placeholder="Amount Sold" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="mod_product">Modify Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Product Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="delete-form">
+                    <div class="mb-3">
+                        <label for="delete-id" class="form-label">Product ID</label>
+                        <input type="text" class="form-control" id="delete-id">
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100" id="del_product">Delete Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (with Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Set up Modify and Delete modals with pre-filled values
+    document.querySelectorAll('button[data-bs-target="#modifyModal"]').forEach(button => {
+        button.addEventListener('click', () => {
+            const row = button.closest('tr');
+            document.getElementById('modify-id').value = row.children[0].textContent.trim();
+            document.getElementById('modify-name').value = row.children[1].textContent.trim();
+            document.getElementById('modify-price').value = row.children[2].textContent.trim().slice(1); // Remove "$"
+            document.getElementById('modify-amount-sold').value = row.children[3].textContent.trim();
+        });
+    });
+
+    document.querySelectorAll('button[data-bs-target="#deleteModal"]').forEach(button => {
+        button.addEventListener('click', () => {
+            //delete product
+        });
+    });
+</script>
+<script src="script.js"></script>
+</body>
+</html>

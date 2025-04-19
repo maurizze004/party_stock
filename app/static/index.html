@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirect Help</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .content {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .info-text {
+            margin-bottom: 30px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content">
+        <div class="info-text">
+            <p>This page allows quick access to different areas of the system: Admin, Customer, and Accounting.</p>
+            <p>Each button will open the selected area in a <strong>new browser tab</strong>, and you can open the same area <strong>multiple times</strong> if needed.</p>
+        </div>
+        <div class="button-container">
+            <button onclick="window.open('/admin', '_blank')">Admin</button>
+            <button onclick="window.open('/customer', '_blank')">Customer</button>
+            <button onclick="window.open('/accounting', '_blank')">Accounting</button>
+        </div>
+    </div>
+
+</body>
+</html>

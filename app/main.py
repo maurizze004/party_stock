@@ -1,4 +1,7 @@
 import multiprocessing
+import threading
+import webbrowser
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -34,4 +37,14 @@ app.include_router(drinks.router)
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False, workers=1)
+
+
+    # Define a function to open the browser
+    def open_browser():
+        webbrowser.open_new("http://127.0.0.1:8000")  # Open the specified URL in a new browser tab
+
+
+    # Start a background thread to open the browser (non-blocking)
+    threading.Timer(1, open_browser).start()
+
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=False, workers=1)
